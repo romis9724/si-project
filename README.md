@@ -1,12 +1,12 @@
-# claude-project-plugin
+# si-project
 
-Claude Code용 SI 프로젝트 산출물 생성 플러그인 마켓플레이스.
+Claude Code용 AI 에이전트 기반 SI 프로젝트 산출물 생성 플러그인.
 
-본 저장소는 **team-tools** Claude Code 마켓플레이스를 제공하며, 현재 1개 플러그인을 포함합니다:
+**romis** 마켓플레이스([`romis9724/claude-marketplace-plugin`](https://github.com/romis9724/claude-marketplace-plugin))를 통해 배포됩니다.
 
-- **`si-project`** (v2.0.0) — AI 에이전트 기반 SI 프로젝트 산출물 생성. 5개 스킬, 106개 표준 문서 템플릿, GHA workflow·pre-commit·SessionStart hook 자동 셋업, lazy loading, 팀 lesson 공유.
+> v2.3.1 (2026-05) — 검토자 subagent + `REVIEWER_SUBAGENT` 플래그 + review-history footer + 원격 작업 큐(GH_CLI_PATH)
 
-> v2.0.0 (2026-05) — `project` → `si-project` namespace 변경 + 5개 스킬 이름 변경 (breaking change). v1.x에서 업그레이드 시 재설치 필요.
+> v2.0.0 (2026-05) — `project` → `si-project` namespace 변경 + 스킬 이름 변경 (breaking change). v1.x에서 업그레이드 시 재설치 필요.
 
 ---
 
@@ -31,15 +31,15 @@ Claude Code용 SI 프로젝트 산출물 생성 플러그인 마켓플레이스.
 ```json
 {
   "extraKnownMarketplaces": {
-    "team-tools": {
+    "romis": {
       "source": {
         "source": "github",
-        "repo": "romis9724/claude-project-plugin"
+        "repo": "romis9724/claude-marketplace-plugin"
       }
     }
   },
   "enabledPlugins": {
-    "si-project@team-tools": true
+    "si-project@romis": true
   }
 }
 ```
@@ -55,15 +55,13 @@ claude   # 신뢰 확인 → 자동 설치
 ### 방법 2: 수동 설치
 
 ```
-/plugin marketplace add romis9724/claude-project-plugin
-/plugin install si-project@team-tools
+/plugin marketplace add romis9724/claude-marketplace-plugin
+/plugin install si-project@romis
 ```
 
 ---
 
-## 포함 플러그인
-
-### `si-project` (v2.0.0)
+## 포함 스킬 (7개)
 
 | 스킬 | 호출 | 용도 |
 |------|------|------|
@@ -72,6 +70,8 @@ claude   # 신뢰 확인 → 자동 설치
 | project-milestone | `/si-project:project-milestone <마일스톤>` | 마일스톤 단위 일괄 생성 + 일관성 점검 |
 | project-summary | `/si-project:project-summary` | 30줄 5섹션 현황 요약 (읽기 전용) |
 | project-adr | `/si-project:project-adr <제목>` | MADR 형식 아키텍처 결정 기록 |
+| project-check | `/si-project:project-check` | 구현 준비도(명확성 게이트) 점검 |
+| project-inbox | `/si-project:project-inbox` | 원격 작업 큐 조회 (.claude/inbox.md + GitHub Issues) |
 
 자세한 사용법: [`plugins/si-project/README.md`](plugins/si-project/README.md)
 
@@ -96,30 +96,31 @@ claude   # 신뢰 확인 → 자동 설치
 ## 디렉토리 구조
 
 ```
-claude-project-plugin/
-├── .claude-plugin/
-│   └── marketplace.json          ← 마켓플레이스 매니페스트 (team-tools)
+si-project/                           ← 이 repo (romis9724/si-project)
+├── .claude-plugin/                   ← (marketplace.json은 허브로 이전됨)
 ├── plugins/
-│   └── si-project/               ← 플러그인 (v2.0.0)
+│   └── si-project/                   ← 플러그인 코드 (v2.3.1)
 │       ├── .claude-plugin/plugin.json
 │       ├── reference/
 │       │   ├── methodology.md
 │       │   └── doc-catalog.md
 │       ├── skills/
 │       │   ├── project-setup/
-│       │   │   ├── SKILL.md      ← 283줄 (인라인 템플릿은 reference/로 분리)
-│       │   │   └── reference/    ← questions, claude-md-template, settings, git-files/, project-files/, adr/, ci-workflows/
-│       │   ├── project-document/SKILL.md
-│       │   ├── project-milestone/SKILL.md
-│       │   ├── project-summary/SKILL.md
-│       │   └── project-adr/SKILL.md
-│       ├── templates/            (106개 markdown 템플릿)
+│       │   ├── project-document/
+│       │   ├── project-milestone/
+│       │   ├── project-summary/
+│       │   ├── project-adr/
+│       │   ├── project-check/
+│       │   └── project-inbox/
+│       ├── templates/                (106개 markdown 템플릿)
 │       └── README.md
 ├── examples/
-│   └── project-settings.json     ← 프로젝트 자동 등록 예시
+│   └── project-settings.json        ← 프로젝트 자동 등록 예시
 ├── README.md
 └── LICENSE
 ```
+
+마켓플레이스 허브: [`romis9724/claude-marketplace-plugin`](https://github.com/romis9724/claude-marketplace-plugin)
 
 ---
 
@@ -130,8 +131,8 @@ v1.x를 쓰던 사용자는:
 1. `~/.claude/settings.json`의 `enabledPlugins`에서 `project@team-tools: true` 제거
 2. `~/.claude/plugins/installed_plugins.json`에서 `project@team-tools` 항목 제거
 3. 캐시 디렉토리 `~/.claude/plugins/cache/team-tools/project/` 삭제
-4. 마켓플레이스 재등록: `/plugin marketplace remove team-tools` → `/plugin marketplace add romis9724/claude-project-plugin`
-5. 새 플러그인 활성화: `/plugin install si-project@team-tools`
+4. 마켓플레이스 재등록: `/plugin marketplace remove team-tools` → `/plugin marketplace add romis9724/claude-marketplace-plugin`
+5. 새 플러그인 활성화: `/plugin install si-project@romis`
 6. 새 명령어 사용:
    - `/project:init` → `/si-project:project-setup`
    - `/project:doc` → `/si-project:project-document`
@@ -139,15 +140,14 @@ v1.x를 쓰던 사용자는:
    - `/project:status` → `/si-project:project-summary`
    - `/project:adr` → `/si-project:project-adr`
 
-기존 프로젝트의 `.claude/settings.json`에 `enabledPlugins.project@team-tools`가 있으면 `si-project@team-tools`로 키 교체 필요.
+기존 프로젝트의 `.claude/settings.json`에 `enabledPlugins.project@team-tools`가 있으면 `si-project@romis`로 키 교체 필요.
 
 ---
 
 ## 업데이트
 
-저장소에 새 commit이 push되면 팀원은:
 ```
-/plugin update si-project@team-tools
+/plugin update si-project@romis
 ```
 
 `autoUpdatesChannel: "latest"` 설정 시 자동.

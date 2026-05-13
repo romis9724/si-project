@@ -262,5 +262,5 @@ si-project/
 
 플러그인 디렉토리가 자기완결 단위:
 - 모든 스킬·템플릿·방법론 문서가 디렉토리 내부에 포함
-- GitHub 마켓플레이스 통해 배포 (`romis9724/claude-project-plugin`)
-- 팀원은 `extraKnownMarketplaces` 설정 + `enabledPlugins.si-project@team-tools: true`로 자동 설치
+- GitHub 마켓플레이스 통해 배포 (`romis9724/si-project` — 허브: `romis9724/claude-marketplace-plugin`)
+- 팀원은 `extraKnownMarketplaces` 설정 + `enabledPlugins.si-project@romis: true`로 자동 설치

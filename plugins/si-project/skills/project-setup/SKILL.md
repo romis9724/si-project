@@ -175,7 +175,7 @@ scripts/
 
 ## STEP 6 — 핵심 템플릿 조건부 복사 (5~8개)
 
-**플러그인 템플릿 루트**: `~/.claude/plugins/marketplaces/team-tools/plugins/si-project/templates/`
+**플러그인 템플릿 루트**: `~/.claude/plugins/marketplaces/romis/plugins/si-project/templates/`
 
 ### 6-1. 항상 복사 (5개)
 

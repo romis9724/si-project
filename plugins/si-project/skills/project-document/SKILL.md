@@ -61,7 +61,7 @@ Grep pattern="^\| interface-requirements" path="<plugin>/reference/doc-catalog.m
 
 식별된 문서에 대해:
 1. **템플릿 로드**: `{플러그인_경로}/templates/{milestone}/{file}.md` 읽기
-   - 플러그인 경로 예: `~/.claude/plugins/marketplaces/team-tools/plugins/si-project/`
+   - 플러그인 경로 예: `~/.claude/plugins/marketplaces/romis/plugins/si-project/`
 2. **작성 가이드 로드 (v2.4 lazy 패턴)**: `{플러그인_경로}/reference/methodology.md` **전체 읽지 말 것**.
    - `Grep pattern="<!-- DOC: {file_stem} -->" -n` → 시작 라인 N
    - `Grep pattern="<!-- /DOC: {file_stem} -->" -n` → 종료 라인 M
