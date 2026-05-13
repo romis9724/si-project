@@ -238,7 +238,7 @@ STEP 0~7 완료 직후 실행 (OS에 맞게 분기):
 ```bash
 git init -b main                              # 또는 git init && git symbolic-ref HEAD refs/heads/main
 git add -A
-git commit -m "chore(meta): 프로젝트 초기화 (si-project plugin v2.1.0)
+git commit -m "chore(meta): 프로젝트 초기화 (si-project plugin v2.3.1)
 
 - 사용 컴포넌트: {MONOREPO_LAYOUT}
 - Branch 전략: {GIT_FLOW_STYLE}
